@@ -1,0 +1,17 @@
+image: docker:19
+
+variables:
+    DOCKER_DRIVER: overlay
+
+stages:
+    - Deploy
+
+services:
+    - docker:dind
+
+deploy:
+    stage: Deploy
+    script:
+        - docker build -t nikasproject/example-html:latest .
+        - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN"
+        - docker push nikasproject/example-html:latest
